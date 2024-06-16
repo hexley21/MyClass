@@ -1,0 +1,290 @@
+openapi: 3.0.3
+info:
+  title: MyClass
+  description: MyClass
+  version: 1.0.11
+
+paths:
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: false
+          default: uuid_generate_v4()
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        email:
+          type: string
+          nullable: false
+          example: john@doe.com
+          maxLength: 255
+        phone:
+          type: string
+          format: phone
+          nullable: true
+          example: 995555123456
+        first_name:
+          type: string
+          nullable: false
+          maxLength: 64
+          minLength: 2
+          example: John
+        last_name:
+          type: string
+          nullable: false
+          maxLength: 64
+          minLength: 2
+          example: Doe
+        hash:
+          type: string
+          nullable: false
+          maxLength: 128
+        role:
+          type: string
+          description: Role of the user
+          enum: 
+            - ADMIN
+            - OWNER
+            - TEACHER
+            - STUDENT
+        userStatus:
+          type: boolean
+          nullable: false
+          default: false
+          example: true
+      xml:
+        name: user
+    Owner:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: false
+          default: uuid_generate_v4()
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        owner_name:
+          type: string
+          nullable: false
+          maxLength: 64
+          minLength: 2
+          example: The Best Owner 77!
+        industry:
+          type: string
+          nullable: false
+          description: The industry where the owner specializes in
+          enum:
+            - Else
+            - Finances
+            - Medicine
+            - Education
+            - Technologies
+            - Agriculture
+            - Entertainment
+            - Construction
+            - Legal
+            - Marketing
+            - Insurance
+            - Automotive
+        country:
+          type: string
+          nullable: false
+          example: Georgia
+      xml:
+        name: owner
+    Subject:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: false
+          default: uuid_generate_v4()
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        owner_id:
+          type: string
+          format: uuid
+          nullable: false
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        code:
+          type: string
+          nullable: false
+          maxLength: 32
+          example: IT-SERV31
+        name:
+          type: string
+          nullable: false
+          maxLength: 255
+          example: IT Services Managment
+        description:
+          type: string
+          format: text
+          nullable: false
+          example: How to manage IT services in real world
+        syallabus:
+          type: string
+          format: url
+          nullable: false
+          example: https://github.com/hexley21
+        min_grade:
+          type: number
+          format: numberic(5, 2)
+          nullable: false
+          example: 12.34
+        price:
+          type: number
+          format: numeric(10, 4)
+          nullable: false
+          example: 123456.1234
+        currency:
+          type: string
+          nullable: false
+          enum:
+            - USD
+            - EUR
+            - GEL
+      xml:
+        name: subject
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: false
+          default: uuid_generate_v4()
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        subject_id:
+          type: string
+          format: uuid
+          nullable: false
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        teacher_id:
+          type: string
+          format: uuid
+          nullable: false
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        capacity:
+          type: number
+          nullable: false
+          example: 25
+      xml:
+        name: group
+    Lesson:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: false
+          default: uuid_generate_v4()
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        subject_id:
+          type: string
+          format: uuid
+          nullable: false
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        name:
+          type: string
+          nullable: false
+          maxLength: 255
+          example: Deploying to AWS
+        date:
+          type: string
+          format: date-time
+          nullable: false
+          example: 27/05/2024
+        description:
+          type: string
+          format: text
+          nullable: true
+          example: This lesson includes the techniques of deploying your project to AWS
+        attachments:
+          type: string
+          format: url
+          nullable: true
+          example: https://gtihub.com/hexley21
+      xml:
+        name: lesson
+    Quiz:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: false
+          default: uuid_generate_v4()
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        subject_id:
+          type: string
+          format: uuid
+          nullable: false
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        max_grade:
+          type: number
+          format: numeric(5, 2)
+          nullable: false
+        min_percentage:
+          type: number
+          format: integer
+          example: 41
+        date:
+          type: string
+          format: date-time
+          nullable: false
+          example: 27/05/2024
+        deadline:
+          type: string
+          format: date-time
+          nullable: false
+          example: 27/05/2024
+      xml:
+        name: quiz
+    Attendance:
+      type: object
+      properties:
+        lesson_id:
+          type: string
+          format: uuid
+          nullable: false
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        student_id:
+          type: string
+          format: uuid
+          nullable: false
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+      xml:
+        name: attendance
+    Grade:
+      type: object
+      properties: 
+        quiz_id:
+          type: string
+          format: uuid
+          nullable: false
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        subject_id:
+          type: string
+          format: uuid
+          nullable: false
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        student_id:
+          type: string
+          format: uuid
+          nullable: false
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        teacher_id:
+          type: string
+          format: uuid
+          nullable: false
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        grade:
+          type: number
+          format: numeric(5, 2)
+          nullable: false
+          example: 12.34
+      xml:
+        name: grade

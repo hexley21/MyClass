@@ -1,0 +1,8 @@
+Makefile
+.envrc
+
+./git
+.gitignore
+
+LICENSE
+*.md

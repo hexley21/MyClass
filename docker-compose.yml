@@ -1,0 +1,47 @@
+services:
+    mc-backend:
+        container_name: mc-backend
+        image: mc-backend
+        build:
+            context: .
+            dockerfile: ./src/Dockerfile
+        restart: unless-stopped
+        depends_on:
+            mc-postgres:
+                condition: service_healthy
+            mc-redis:
+                condition: service_healthy
+        volumes:
+            - ./docker-data/logs:/root/logs
+        env_file: .env
+        
+    mc-postgres:
+        container_name: mc-postgres
+        image: postgres:latest
+        ports:
+            - "5432:5432"
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+            interval: 1s
+            timeout: 1s
+            retries: 20
+        volumes:
+            - ./docker-data/postgres-data:/var/lib/postgresql/data
+        env_file: .env
+    mc-redis:
+        container_name: mc-redis
+        image: redis:latest
+        ports:
+            - "6379:6379"
+        restart: unless-stopped
+        command:
+            - /bin/sh
+            - -c
+            - redis-server --requirepass "${REDIS_PASSWORD}"
+        healthcheck:
+            test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+            interval: 1s
+            timeout: 1s
+            retries: 20
+        env_file: .env
