@@ -26,13 +26,13 @@ components:
           format: phone
           nullable: true
           example: 995555123456
-        first_name:
+        firstname:
           type: string
           nullable: false
           maxLength: 64
           minLength: 2
           example: John
-        last_name:
+        lastname:
           type: string
           nullable: false
           maxLength: 64

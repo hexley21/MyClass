@@ -20,16 +20,16 @@ build:
 # POSTGRES
 
 dev/migrate-up:
-	migrate -path ./src/sql/migrations -database "postgresql://${DEV_POSTGRES_USER}:${DEV_POSTGRES_PASSWORD}@${DEV_POSTGRES_HOST}:${DEV_POSTGRES_PORT}/${DEV_POSTGRES_DB}?sslmode=disable" -verbose up
+	migrate -path ./src/sql/migrations -database "postgresql://postgres:${DEV_PG_PASSWORD}@${DEV_PG_HOST}:${DEV_PG_PORT}/${DEV_PG_DB}?sslmode=disable" -verbose up
 
 dev/migrate-down:
-	migrate -path ./src/sql/migrations -database "postgresql://${DEV_POSTGRES_USER}:${DEV_POSTGRES_PASSWORD}@${DEV_POSTGRES_HOST}:${DEV_POSTGRES_PORT}/${DEV_POSTGRES_DB}?sslmode=disable" -verbose down
+	migrate -path ./src/sql/migrations -database "postgresql://postgres:${DEV_PG_PASSWORD}@${DEV_PG_HOST}:${DEV_PG_PORT}/${DEV_PG_DB}?sslmode=disable" -verbose down
 
 prod/migrate-up:
-	migrate -path ./src/sql/migrations -database "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=require" -verbose up
+	migrate -path ./src/sql/migrations -database "postgresql://${PG_USER}:${PG_PASSWORD}@${PG_HOST}:${PG_PORT}/${PG_DB}?sslmode=require" -verbose up
 
 prod/migrate-down:
-	migrate -path ./src/sql/migrations -database "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=require" -verbose down
+	migrate -path ./src/sql/migrations -database "postgresql://${PG_USER}:${PG_PASSWORD}@${PG_HOST}:${PG_PORT}/${PG_DB}?sslmode=require" -verbose down
 
 migrate-init:
 	migrate create -ext sql -dir ./src/sql/migrations/ -seq init_schema
