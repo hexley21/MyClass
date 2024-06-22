@@ -42,6 +42,12 @@ CREATE TABLE IF NOT EXISTS class.group(
     capacity INTEGER CHECK (capacity > 0 AND capacity < 100) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS class.group_student(
+    group_id UUID REFERENCES class.group(id) NOT NULL,
+    student_id UUID REFERENCES client.user(id) ON DELETE CASCADE NOT NULL,
+    PRIMARY KEY(group_id, student_id)
+)
+
 CREATE TABLE IF NOT EXISTS class.lesson(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
     subject_id UUID REFERENCES class.subject(id) ON DELETE CASCADE NOT NULL,
