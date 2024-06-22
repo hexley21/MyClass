@@ -8,6 +8,7 @@ tags:
   - name: subject
   - name: group
   - name: student
+  - name: lesson
 paths:
   /users:
     get:
@@ -232,6 +233,7 @@ paths:
     get:
       tags:
         - group
+        - subject
       summary: Lists paginated groups
       parameters:
         - $ref: '#/components/parameters/AccessKey'
@@ -249,6 +251,7 @@ paths:
     post:
       tags:
         - group
+        - subject
       summary: Creates new group for specified subject
       parameters:
         - $ref: '#/components/parameters/AccessKey'
@@ -270,15 +273,14 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 
-  /groups/{group_id}:
+  /groups/{id}:
     get:
       tags:
         - group
       summary: Finds group of specified subject by id
       parameters:
         - $ref: '#/components/parameters/AccessKey'
-        - $ref: '#/components/parameters/subject_id'
-        - $ref: '#/components/parameters/group_id'
+        - $ref: '#/components/parameters/UUID'
       responses:
         '200':
           $ref: '#/components/responses/SuccessGroup'
@@ -294,8 +296,7 @@ paths:
       summary: Deletes group of specified subject by id
       parameters:
         - $ref: '#/components/parameters/AccessKey'
-        - $ref: '#/components/parameters/subject_id'
-        - $ref: '#/components/parameters/group_id'
+        - $ref: '#/components/parameters/UUID'
       responses:
         '204':
           description: No content, deleted successfully
@@ -311,18 +312,17 @@ paths:
       summary: Updates subject's group's data
       parameters:
         - $ref: '#/components/parameters/AccessKey'
-        - $ref: '#/components/parameters/subject_id'
-        - $ref: '#/components/parameters/group_id'
+        - $ref: '#/components/parameters/UUID'
       requestBody:
         description: Update an existent group of specified subject
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Group-Patch'
+              $ref: '#/components/schemas/Group-Args'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Group-Patch'
+              $ref: '#/components/schemas/Group-Args'
       responses:
         '200':
           $ref: '#/components/responses/SuccessGroup'
@@ -332,15 +332,14 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /groups/{group_id}/students:
+  /groups/{id}/students:
     get:
       tags:
         - student
       summary: Lists paginated users of specified subject's group
       parameters:
         - $ref: '#/components/parameters/AccessKey'
-        - $ref: '#/components/parameters/subject_id'
-        - $ref: '#/components/parameters/group_id'
+        - $ref: '#/components/parameters/UUID'
         - $ref: '#/components/parameters/Page'
         - $ref: '#/components/parameters/per_page'
       responses:
@@ -358,7 +357,6 @@ paths:
       summary: Add student to a group
       parameters:
         - $ref: '#/components/parameters/AccessKey'
-        - $ref: '#/components/parameters/subject_id'
         - $ref: '#/components/parameters/group_id'
       requestBody:
         description: Id of a student to add
@@ -388,7 +386,6 @@ paths:
       summary: Remove student from a group
       parameters:
         - $ref: '#/components/parameters/AccessKey'
-        - $ref: '#/components/parameters/subject_id'
         - $ref: '#/components/parameters/group_id'
         - $ref: '#/components/parameters/UUID'
       responses:
@@ -400,8 +397,117 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+  /subjects/{id}/lessons:
+    get:
+      tags:
+        - lesson
+        - subject
+      summary: Lists paginated Lessons
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/per_page'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessLessonArr'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      tags:
+        - lesson
+        - subject
+      summary: Creates new lesson for specified subject
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      requestBody:
+        description: New Lesson
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lesson-Args'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Lesson-Args'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessLesson'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
+  /lessons/{id}:
+    get:
+      tags:
+        - lesson
+      summary: Finds Lesson by id
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessLesson'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+ 
+    delete:
+      tags:
+        - lesson
+      summary: Delete lesson
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '204':
+          description: Success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags:
+        - lesson
+      summary: Updates Lesson
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      requestBody:
+        description: New Lesson
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lesson-Args'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Lesson-Args'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessLesson'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  
 components:
   schemas:
     User:
@@ -574,8 +680,6 @@ components:
           type: string
           nullable: false
           example: Georgia
-      xml:
-        name: owner
     Subject:
       type: object
       properties:
@@ -695,16 +799,9 @@ components:
           type: number
           nullable: false
           example: 25
-      xml:
-        name: group
     Group-Args:
       type: object
       properties:
-        subject_id:
-          type: string
-          format: uuid
-          nullable: false
-          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
         teacher_id:
           type: string
           format: uuid
@@ -714,22 +811,6 @@ components:
           type: number
           nullable: false
           example: 25
-      xml:
-        name: group
-    Group-Patch:
-      type: object
-      properties:
-        teacher_id:
-          type: string
-          format: uuid
-          nullable: false
-          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
-        capacity:
-          type: number
-          nullable: false
-          example: 25
-      xml:
-        name: group
     Lesson:
       type: object
       properties:
@@ -764,8 +845,29 @@ components:
           format: url
           nullable: true
           example: https://gtihub.com/hexley21
-      xml:
-        name: lesson
+    Lesson-Args:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: false
+          maxLength: 255
+          example: Deploying to AWS
+        date:
+          type: string
+          format: date-time
+          nullable: false
+          example: 27/05/2024
+        description:
+          type: string
+          format: text
+          nullable: true
+          example: This lesson includes the techniques of deploying your project to AWS
+        attachments:
+          type: string
+          format: url
+          nullable: true
+          example: https://gtihub.com/hexley21
     Quiz:
       type: object
       properties:
@@ -798,8 +900,6 @@ components:
           format: date-time
           nullable: false
           example: 27/05/2024
-      xml:
-        name: quiz
     Attendance:
       type: object
       properties:
@@ -813,8 +913,6 @@ components:
           format: uuid
           nullable: false
           example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
-      xml:
-        name: attendance
     Grade:
       type: object
       properties: 
@@ -843,8 +941,6 @@ components:
           format: numeric(5, 2)
           nullable: false
           example: 12.34
-      xml:
-        name: grade
     UUID:
       type: object
       properties:
@@ -975,6 +1071,30 @@ components:
                     type: array
                     items:
                       $ref: '#/components/schemas/Group'
+    SuccessLesson:
+      description: Successful Group operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ApiResponse'
+              - type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Lesson'
+    SuccessLessonArr:
+      description: Successful Subject operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/PageResponse'
+              - type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Lesson'
   parameters:
     AccessKey:
       name: access_key
@@ -1005,13 +1125,6 @@ components:
         type: number
         default: 20
     UUID:
-      name: id
-      in: path
-      description: ID of an object
-      required: true
-      schema:
-        type: string
-    UUID_query:
       name: id
       in: query
       description: ID of an object
