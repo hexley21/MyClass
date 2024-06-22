@@ -38,7 +38,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/AccessKey-NonRequired'
       requestBody:
-        description: Update an existent user
+        description: User Arguments
         required: true
         content:
           application/json:
@@ -270,7 +270,7 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 
-  /subjects/{subject_id}/groups/{group_id}:
+  /groups/{group_id}:
     get:
       tags:
         - group
@@ -332,6 +332,76 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+  /groups/{group_id}/students:
+    get:
+      tags:
+        - student
+      summary: Lists paginated users of specified subject's group
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/subject_id'
+        - $ref: '#/components/parameters/group_id'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/per_page'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessGroupArr'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      tags:
+        - student
+      summary: Add student to a group
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/subject_id'
+        - $ref: '#/components/parameters/group_id'
+      requestBody:
+        description: Id of a student to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UUID'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UUID'
+      responses:
+        '204':
+          description: Success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /groups/{group_id}/students/{id}:
+    delete:
+      tags:
+        - student
+      summary: Remove student from a group
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/subject_id'
+        - $ref: '#/components/parameters/group_id'
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '204':
+          description: Success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
 components:
   schemas:
     User:
@@ -775,6 +845,14 @@ components:
           example: 12.34
       xml:
         name: grade
+    UUID:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: false
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
     ApiResponse:
       type: object
       properties:
@@ -809,6 +887,12 @@ components:
             $ref: '#/components/schemas/BasicError'
     NotFound:
       description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BasicError'
+    Conflict:
+      description: Conflict
       content:
         application/json:
           schema:
@@ -927,17 +1011,24 @@ components:
       required: true
       schema:
         type: string
+    UUID_query:
+      name: id
+      in: query
+      description: ID of an object
+      required: true
+      schema:
+        type: string
     subject_id:
       name: subject_id
       in: path
-      description: ID of an object
+      description: ID of a subject
       required: true
       schema:
         type: string
     group_id:
       name: group_id
       in: path
-      description: ID of an object
+      description: ID of a group
       required: true
       schema:
         type: string
