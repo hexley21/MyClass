@@ -3,8 +3,165 @@ info:
   title: MyClass
   description: MyClass
   version: 1.0.11
-
+tags:
+  - name: user
 paths:
+  /users:
+    get:
+      tags:
+        - user
+      summary: Lists paginated users
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/Page'
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessUserArr'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    post:
+      tags:
+        - user
+      summary: Creates user
+      parameters:
+        - $ref: '#/components/parameters/AccessKey-NonRequired'
+      requestBody:
+        description: Update an existent user
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User-Args'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User-Args'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessUser'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+    delete:
+      tags:
+        - user
+      summary: deletes user by id
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '204':
+          description: No content, deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /users/{id}:
+    get:
+      tags:
+        - user
+      summary: Finds user by id
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessUser'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - user
+      summary: deletes user by id
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '204':
+          description: No content, deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags:
+        - user
+      summary: Updates users's data
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      requestBody:
+        description: Update an existent user
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User-Args'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User-Args'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessUser'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - subject
+      summary: Lists paginated subjects
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessSubjectArr'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    post:
+      tags:
+        - subject
+      summary: Creates subject
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+      requestBody:
+        description: Create new subject
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subject-Args'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Subject-Args'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessSubject'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
 components:
   schemas:
     User:
@@ -55,8 +212,92 @@ components:
           nullable: false
           default: false
           example: true
-      xml:
-        name: user
+    User-NoHash:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: false
+          default: uuid_generate_v4()
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        email:
+          type: string
+          nullable: false
+          example: john@doe.com
+          maxLength: 255
+        phone:
+          type: string
+          format: phone
+          nullable: true
+          example: 995555123456
+        firstname:
+          type: string
+          nullable: false
+          maxLength: 64
+          minLength: 2
+          example: John
+        lastname:
+          type: string
+          nullable: false
+          maxLength: 64
+          minLength: 2
+          example: Doe
+        role:
+          type: string
+          description: Role of the user
+          enum: 
+            - ADMIN
+            - OWNER
+            - TEACHER
+            - STUDENT
+        userStatus:
+          type: boolean
+          nullable: false
+          default: false
+          example: true
+    User-Args:
+      type: object
+      properties:
+        email:
+          type: string
+          nullable: false
+          example: john@doe.com
+          maxLength: 255
+        phone:
+          type: string
+          format: phone
+          nullable: true
+          example: 995555123456
+        firstname:
+          type: string
+          nullable: false
+          maxLength: 64
+          minLength: 2
+          example: John
+        lastname:
+          type: string
+          nullable: false
+          maxLength: 64
+          minLength: 2
+          example: Doe
+        password:
+          type: string
+          nullable: false
+          maxLength: 64
+        role:
+          type: string
+          description: Role of the user
+          enum: 
+            - ADMIN
+            - OWNER
+            - TEACHER
+            - STUDENT
+        userStatus:
+          type: boolean
+          nullable: false
+          default: false
+          example: true
     Owner:
       type: object
       properties:
@@ -146,8 +387,6 @@ components:
             - USD
             - EUR
             - GEL
-      xml:
-        name: subject
     Group:
       type: object
       properties:
@@ -288,3 +527,141 @@ components:
           example: 12.34
       xml:
         name: grade
+    ApiResponse:
+      type: object
+      properties:
+        data:
+          type: object
+    BasicError:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BasicError'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BasicError'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BasicError'
+    SuccessEmpty:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+    SuccessUser:
+      description: Successful User operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ApiResponse'
+              - type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/User-NoHash'
+    SuccessUserArr:
+      description: Successful User operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ApiResponse'
+              - type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User-NoHash'
+    SuccessSubject:
+      description: Successful Subject operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ApiResponse'
+              - type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Subject'
+    SuccessSubjectArr:
+      description: Successful Subject operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ApiResponse'
+              - type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Subject'
+    SuccessGroup:
+      description: Successful Group operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ApiResponse'
+              - type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Group'
+    SuccessGroupArr:
+      description: Successful Subject operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ApiResponse'
+              - type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Group'
+  parameters:
+    AccessKey:
+      name: access_key
+      in: header
+      description: 'user Access Key'
+      required: true
+      schema:
+        type: string
+    AccessKey-NonRequired:
+      name: access_key
+      in: header
+      description: 'user Access Key'
+      required: false
+      schema:
+        type: string
+    Page:
+      name: page
+      in: query
+      required: true
+      schema:
+        type: number
+        default: 1
+    UUID:
+      name: id
+      in: path
+      description: ID of an object
+      required: true
+      schema:
+        type: string
