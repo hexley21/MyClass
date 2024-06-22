@@ -9,6 +9,7 @@ tags:
   - name: group
   - name: student
   - name: lesson
+  - name: quiz
 paths:
   /users:
     get:
@@ -506,8 +507,115 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-
-  
+  /subjects/{id}/quizzes:
+    get:
+      tags:
+        - quiz
+        - subject
+      summary: Lists paginated quizzes
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/per_page'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessQuizArr'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      tags:
+        - quiz
+        - subject
+      summary: Creates new quiz for specified subject
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      requestBody:
+        description: New Quiz
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quiz-Args'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Quiz-Args'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessQuiz'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /quiz/{id}:
+    get:
+      tags:
+        - quiz
+      summary: Finds Quiz by id
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessQuiz'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+ 
+    delete:
+      tags:
+        - quiz
+      summary: Delete Quiz
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '204':
+          description: Success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags:
+        - quiz
+      summary: Updates Quiz
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      requestBody:
+        description: New Quiz
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quiz-Args'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Quiz-Args'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessLesson'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
 components:
   schemas:
     User:
@@ -900,6 +1008,27 @@ components:
           format: date-time
           nullable: false
           example: 27/05/2024
+    Quiz-Args:
+      type: object
+      properties:
+        max_grade:
+          type: number
+          format: numeric(5, 2)
+          nullable: false
+        min_percentage:
+          type: number
+          format: integer
+          example: 41
+        date:
+          type: string
+          format: date-time
+          nullable: false
+          example: 27/05/2024
+        deadline:
+          type: string
+          format: date-time
+          nullable: false
+          example: 27/05/2024
     Attendance:
       type: object
       properties:
@@ -1059,7 +1188,7 @@ components:
                   data:
                     $ref: '#/components/schemas/Group'
     SuccessGroupArr:
-      description: Successful Subject operation
+      description: Successful Group operation
       content:
         application/json:
           schema:
@@ -1072,7 +1201,7 @@ components:
                     items:
                       $ref: '#/components/schemas/Group'
     SuccessLesson:
-      description: Successful Group operation
+      description: Successful Lesson operation
       content:
         application/json:
           schema:
@@ -1083,7 +1212,7 @@ components:
                   data:
                     $ref: '#/components/schemas/Lesson'
     SuccessLessonArr:
-      description: Successful Subject operation
+      description: Successful Lesson operation
       content:
         application/json:
           schema:
@@ -1095,6 +1224,30 @@ components:
                     type: array
                     items:
                       $ref: '#/components/schemas/Lesson'
+    SuccessQuiz:
+      description: Successful Quiz operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ApiResponse'
+              - type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Quiz'
+    SuccessQuizArr:
+      description: Successful Quiz operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/PageResponse'
+              - type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Quiz'                      
   parameters:
     AccessKey:
       name: access_key
