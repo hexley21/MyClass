@@ -7,6 +7,7 @@ tags:
   - name: user
   - name: subject
   - name: group
+  - name: student
 paths:
   /users:
     get:
@@ -16,6 +17,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/AccessKey'
         - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/per_page'
         - name: status
           in: query
           required: false
@@ -136,6 +138,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/AccessKey'
         - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/per_page'
       responses:
         '200':
           $ref: '#/components/responses/SuccessSubjectArr'
@@ -233,6 +236,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/AccessKey'
         - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/per_page'
       responses:
         '200':
           $ref: '#/components/responses/SuccessGroupArr'
@@ -304,7 +308,7 @@ paths:
     patch:
       tags:
         - group
-      summary: Updates subject's data
+      summary: Updates subject's group's data
       parameters:
         - $ref: '#/components/parameters/AccessKey'
         - $ref: '#/components/parameters/subject_id'
@@ -328,8 +332,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-    
-
 components:
   schemas:
     User:
@@ -778,6 +780,13 @@ components:
       properties:
         data:
           type: object
+    PageResponse:
+      type: object
+      properties:
+        data:
+          type: array
+        has_more:
+          type: boolean
     BasicError:
       type: object
       properties:
@@ -827,7 +836,7 @@ components:
         application/json:
           schema:
             allOf:
-              - $ref: '#/components/schemas/ApiResponse'
+              - $ref: '#/components/schemas/PageResponse'
               - type: object
                 properties:
                   data:
@@ -851,7 +860,7 @@ components:
         application/json:
           schema:
             allOf:
-              - $ref: '#/components/schemas/ApiResponse'
+              - $ref: '#/components/schemas/PageResponse'
               - type: object
                 properties:
                   data:
@@ -875,7 +884,7 @@ components:
         application/json:
           schema:
             allOf:
-              - $ref: '#/components/schemas/ApiResponse'
+              - $ref: '#/components/schemas/PageResponse'
               - type: object
                 properties:
                   data:
@@ -904,6 +913,13 @@ components:
       schema:
         type: number
         default: 1
+    per_page:
+      name: per_page
+      in: query
+      required: true
+      schema:
+        type: number
+        default: 20
     UUID:
       name: id
       in: path
