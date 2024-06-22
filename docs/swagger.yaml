@@ -5,6 +5,7 @@ info:
   version: 1.0.11
 tags:
   - name: user
+  - name: subject
 paths:
   /users:
     get:
@@ -126,6 +127,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+  /subjects:
+    get:
       tags:
         - subject
       summary: Lists paginated subjects
@@ -162,6 +165,65 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
+  /subjects/{id}:
+    get:
+      tags:
+        - subject
+      summary: Finds subject by id
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessSubject'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - subject
+      summary: deletes subject by id
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '204':
+          description: No content, deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags:
+        - subject
+      summary: Updates subject's data
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      requestBody:
+        description: Update an existent subject
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subject-Args'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Subject-Args'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessSubject'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
 components:
   schemas:
     User:
@@ -345,6 +407,51 @@ components:
           nullable: false
           default: uuid_generate_v4()
           example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        owner_id:
+          type: string
+          format: uuid
+          nullable: false
+          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
+        code:
+          type: string
+          nullable: false
+          maxLength: 32
+          example: IT-SERV31
+        name:
+          type: string
+          nullable: false
+          maxLength: 255
+          example: IT Services Managment
+        description:
+          type: string
+          format: text
+          nullable: false
+          example: How to manage IT services in real world
+        syallabus:
+          type: string
+          format: url
+          nullable: false
+          example: https://github.com/hexley21
+        min_grade:
+          type: number
+          format: numberic(5, 2)
+          nullable: false
+          example: 12.34
+        price:
+          type: number
+          format: numeric(10, 4)
+          nullable: false
+          example: 123456.1234
+        currency:
+          type: string
+          nullable: false
+          enum:
+            - USD
+            - EUR
+            - GEL
+    Subject-Args:
+      type: object
+      properties:
         owner_id:
           type: string
           format: uuid
