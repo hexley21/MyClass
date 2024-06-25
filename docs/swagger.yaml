@@ -28,7 +28,7 @@ paths:
             default: true
       responses:
         '200':
-          $ref: '#/components/responses/SuccessUserArr'
+          $ref: '#/components/responses/UserArr'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -51,7 +51,7 @@ paths:
               $ref: '#/components/schemas/User-Args'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessUser'
+          $ref: '#/components/responses/User'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -66,7 +66,7 @@ paths:
         - $ref: '#/components/parameters/UUID'
       responses:
         '204':
-          description: No content, deleted successfully
+          description: No content, deleted fully
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -83,7 +83,7 @@ paths:
         - $ref: '#/components/parameters/UUID'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessUser'
+          $ref: '#/components/responses/User'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -99,7 +99,7 @@ paths:
         - $ref: '#/components/parameters/UUID'
       responses:
         '204':
-          description: No content, deleted successfully
+          description: No content, deleted fully
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -125,7 +125,7 @@ paths:
               $ref: '#/components/schemas/User-Args'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessUser'
+          $ref: '#/components/responses/User'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -143,7 +143,7 @@ paths:
         - $ref: '#/components/parameters/per_page'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessSubjectArr'
+          $ref: '#/components/responses/SubjectArr'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -166,7 +166,7 @@ paths:
               $ref: '#/components/schemas/Subject-Args'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessSubject'
+          $ref: '#/components/responses/Subject'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -181,7 +181,7 @@ paths:
         - $ref: '#/components/parameters/UUID'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessSubject'
+          $ref: '#/components/responses/Subject'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -197,7 +197,7 @@ paths:
         - $ref: '#/components/parameters/UUID'
       responses:
         '204':
-          description: No content, deleted successfully
+          description: No content, deleted fully
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -223,7 +223,7 @@ paths:
               $ref: '#/components/schemas/Subject-Args'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessSubject'
+          $ref: '#/components/responses/Subject'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -242,7 +242,7 @@ paths:
         - $ref: '#/components/parameters/per_page'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessGroupArr'
+          $ref: '#/components/responses/GroupArr'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -268,7 +268,7 @@ paths:
               $ref: '#/components/schemas/Group-Args'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessGroup'
+          $ref: '#/components/responses/Group'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -284,7 +284,7 @@ paths:
         - $ref: '#/components/parameters/UUID'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessGroup'
+          $ref: '#/components/responses/Group'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -300,7 +300,7 @@ paths:
         - $ref: '#/components/parameters/UUID'
       responses:
         '204':
-          description: No content, deleted successfully
+          description: No content, deleted fully
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -326,7 +326,7 @@ paths:
               $ref: '#/components/schemas/Group-Args'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessGroup'
+          $ref: '#/components/responses/Group'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -345,7 +345,7 @@ paths:
         - $ref: '#/components/parameters/per_page'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessGroupArr'
+          $ref: '#/components/responses/GroupArr'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -371,7 +371,7 @@ paths:
               $ref: '#/components/schemas/UUID'
       responses:
         '204':
-          description: Success
+          description: 
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -391,7 +391,7 @@ paths:
         - $ref: '#/components/parameters/UUID'
       responses:
         '204':
-          description: Success
+          description: 
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -411,7 +411,7 @@ paths:
         - $ref: '#/components/parameters/per_page'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessLessonArr'
+          $ref: '#/components/responses/LessonArr'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -438,7 +438,7 @@ paths:
               $ref: '#/components/schemas/Lesson-Args'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessLesson'
+          $ref: '#/components/responses/Lesson'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -457,7 +457,7 @@ paths:
         - $ref: '#/components/parameters/UUID'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessLesson'
+          $ref: '#/components/responses/Lesson'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -474,7 +474,7 @@ paths:
         - $ref: '#/components/parameters/UUID'
       responses:
         '204':
-          description: Success
+          description: 
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -500,7 +500,7 @@ paths:
               $ref: '#/components/schemas/Lesson-Args'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessLesson'
+          $ref: '#/components/responses/Lesson'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -520,7 +520,7 @@ paths:
         - $ref: '#/components/parameters/per_page'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessQuizArr'
+          $ref: '#/components/responses/QuizArr'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -547,7 +547,7 @@ paths:
               $ref: '#/components/schemas/Quiz-Args'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessQuiz'
+          $ref: '#/components/responses/Quiz'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -566,7 +566,7 @@ paths:
         - $ref: '#/components/parameters/UUID'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessQuiz'
+          $ref: '#/components/responses/Quiz'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -583,7 +583,7 @@ paths:
         - $ref: '#/components/parameters/UUID'
       responses:
         '204':
-          description: Success
+          description: 
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -609,7 +609,25 @@ paths:
               $ref: '#/components/schemas/Quiz-Args'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessLesson'
+          $ref: '#/components/responses/Lesson'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /students/{id}:
+    get:
+      tags:
+        - student
+      summary: Finds student by id
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+        - $ref: '#/components/parameters/include_gs'
+      responses:
+        '200':
+          $ref: '#/components/responses/Student'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -752,6 +770,21 @@ components:
           nullable: false
           default: false
           example: true
+    Student:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User-NoHash'
+        groups:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Group'
+        subjects:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Subject'
     Owner:
       type: object
       properties:
@@ -1122,13 +1155,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/BasicError'
-    SuccessEmpty:
+    Empty:
       description: Successful operation
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiResponse'
-    SuccessUser:
+    User:
       description: Successful User operation
       content:
         application/json:
@@ -1139,7 +1172,7 @@ components:
                 properties:
                   data:
                     $ref: '#/components/schemas/User-NoHash'
-    SuccessUserArr:
+    UserArr:
       description: Successful User operation
       content:
         application/json:
@@ -1152,7 +1185,18 @@ components:
                     type: array
                     items:
                       $ref: '#/components/schemas/User-NoHash'
-    SuccessSubject:
+    Student:
+      description: Successful Student operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ApiResponse'
+              - type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Student'
+    Subject:
       description: Successful Subject operation
       content:
         application/json:
@@ -1163,7 +1207,7 @@ components:
                 properties:
                   data:
                     $ref: '#/components/schemas/Subject'
-    SuccessSubjectArr:
+    SubjectArr:
       description: Successful Subject operation
       content:
         application/json:
@@ -1176,7 +1220,7 @@ components:
                     type: array
                     items:
                       $ref: '#/components/schemas/Subject'
-    SuccessGroup:
+    Group:
       description: Successful Group operation
       content:
         application/json:
@@ -1187,7 +1231,7 @@ components:
                 properties:
                   data:
                     $ref: '#/components/schemas/Group'
-    SuccessGroupArr:
+    GroupArr:
       description: Successful Group operation
       content:
         application/json:
@@ -1200,7 +1244,7 @@ components:
                     type: array
                     items:
                       $ref: '#/components/schemas/Group'
-    SuccessLesson:
+    Lesson:
       description: Successful Lesson operation
       content:
         application/json:
@@ -1211,7 +1255,7 @@ components:
                 properties:
                   data:
                     $ref: '#/components/schemas/Lesson'
-    SuccessLessonArr:
+    LessonArr:
       description: Successful Lesson operation
       content:
         application/json:
@@ -1224,7 +1268,7 @@ components:
                     type: array
                     items:
                       $ref: '#/components/schemas/Lesson'
-    SuccessQuiz:
+    Quiz:
       description: Successful Quiz operation
       content:
         application/json:
@@ -1235,7 +1279,7 @@ components:
                 properties:
                   data:
                     $ref: '#/components/schemas/Quiz'
-    SuccessQuizArr:
+    QuizArr:
       description: Successful Quiz operation
       content:
         application/json:
@@ -1248,6 +1292,7 @@ components:
                     type: array
                     items:
                       $ref: '#/components/schemas/Quiz'                      
+  
   parameters:
     AccessKey:
       name: access_key
@@ -1279,7 +1324,7 @@ components:
         default: 20
     UUID:
       name: id
-      in: query
+      in: path
       description: ID of an object
       required: true
       schema:
@@ -1296,5 +1341,12 @@ components:
       in: path
       description: ID of a group
       required: true
+      schema:
+        type: string
+    include_gs:
+      name: include
+      in: query
+      description: Specify what to include and spearate each by comma
+      required: false
       schema:
         type: string

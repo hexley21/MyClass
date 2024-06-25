@@ -48,6 +48,12 @@ CREATE TABLE IF NOT EXISTS class.group_student(
     PRIMARY KEY(group_id, student_id)
 )
 
+CREATE TABLE IF NOT EXISTS class.subject_student(
+    subject_id UUID REFERENCES class.subject(id) NOT NULL,
+    student_id UUID REFERENCES client.user(id) ON DELETE CASCADE NOT NULL,
+    PRIMARY KEY(subject_id, student_id)
+)
+
 CREATE TABLE IF NOT EXISTS class.lesson(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
     subject_id UUID REFERENCES class.subject(id) ON DELETE CASCADE NOT NULL,
