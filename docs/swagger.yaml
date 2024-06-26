@@ -3,6 +3,12 @@ info:
   title: MyClass
   description: MyClass
   version: 1.0.11
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: https://myclass.ge/api/v1
+  - url: http://localhost:8080/api/v1
 tags:
   - name: user
   - name: subject
@@ -14,7 +20,7 @@ tags:
   - name: attendance
   - name: grade
 paths:
-  /users:
+ /users:
     get:
       tags:
         - user
@@ -75,7 +81,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /users/{id}:
+ /users/{id}:
     get:
       tags:
         - user
@@ -134,7 +140,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /subjects:
+ /subjects:
     get:
       tags:
         - subject
@@ -173,7 +179,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-  /subjects/{id}:
+ /subjects/{id}:
     get:
       tags:
         - subject
@@ -232,7 +238,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /subjects/{id}/groups:
+ /subjects/{id}/groups:
     get:
       tags:
         - group
@@ -276,7 +282,7 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 
-  /groups/{id}:
+ /groups/{id}:
     get:
       tags:
         - group
@@ -335,7 +341,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /groups/{id}/students:
+ /groups/{id}/students:
     get:
       tags:
         - student
@@ -382,7 +388,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-  /groups/{group_id}/students/{id}:
+ /groups/{group_id}/students/{id}:
     delete:
       tags:
         - student
@@ -400,7 +406,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /subjects/{id}/lessons:
+ /subjects/{id}/lessons:
     get:
       tags:
         - lesson
@@ -449,7 +455,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-  /lessons/{id}:
+ /lessons/{id}:
     get:
       tags:
         - lesson
@@ -509,7 +515,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /subjects/{id}/quizzes:
+ /subjects/{id}/quizzes:
     get:
       tags:
         - quiz
@@ -558,7 +564,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
-  /quiz/{id}:
+ /quiz/{id}:
     get:
       tags:
         - quiz
@@ -618,7 +624,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /students/{id}:
+ /students/{id}:
     get:
       tags:
         - student
@@ -635,7 +641,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /students/{id}/subjects:
+ /students/{id}/subjects:
     get:
       tags:
         - student
@@ -654,7 +660,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /students/{id}/groups:
+ /students/{id}/groups:
     get:
       tags:
         - student
@@ -672,7 +678,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /students/{id}/attendance:
+ /students/{id}/attendance:
     get:
       tags:
         - student
@@ -691,7 +697,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
   
-  /students/{student_id}/subjects/{subject_id}/attendance:
+ /students/{student_id}/subjects/{subject_id}/attendance:
     get:
       tags:
         - student
@@ -711,7 +717,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
-  /students/{student_id}/lesson/{lesson_id}/attendance:
+ /students/{student_id}/lesson/{lesson_id}/attendance:
     get:
       tags:
         - student
@@ -768,7 +774,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /students/{id}/grades:
+ /students/{id}/grades:
     get:
       tags:
         - student
@@ -786,7 +792,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /students/{student_id}/subjects/{subject_id}/grades:
+ /students/{student_id}/subjects/{subject_id}/grades:
     get:
       tags:
         - student
@@ -806,7 +812,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
-  /students/{student_id}/quiz/{quiz_id}/grade:
+ /students/{student_id}/quiz/{quiz_id}/grade:
     get:
       tags:
         - student
@@ -923,7 +929,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /teacher/{id}:
+ /teacher/{id}:
     get:
       tags:
         - teacher
@@ -940,7 +946,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /teacher/{id}/subjects:
+ /teacher/{id}/subjects:
     get:
       tags:
         - teacher
@@ -959,7 +965,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-  /teacher/{id}/groups:
+ /teacher/{id}/groups:
     get:
       tags:
         - teacher
