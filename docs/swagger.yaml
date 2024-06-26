@@ -8,6 +8,7 @@ tags:
   - name: subject
   - name: group
   - name: student
+  - name: teacher
   - name: lesson
   - name: quiz
 paths:
@@ -282,7 +283,6 @@ paths:
       parameters:
         - $ref: '#/components/parameters/AccessKey'
         - $ref: '#/components/parameters/UUID'
-        - $ref: '#/components/parameters/include_group'
       responses:
         '200':
           $ref: '#/components/responses/Group'
@@ -625,16 +625,107 @@ paths:
       parameters:
         - $ref: '#/components/parameters/AccessKey'
         - $ref: '#/components/parameters/UUID'
-        - $ref: '#/components/parameters/include_student'
       responses:
         '200':
-          $ref: '#/components/responses/Student'
+          $ref: '#/components/responses/User'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+  /students/{id}/subjects:
+    get:
+      tags:
+        - student
+        - subject
+      summary: Returns student's subjects according to active state
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+        - $ref: '#/components/parameters/is_active'
+      responses:
+        '200':
+          $ref: '#/components/responses/SubjectArr'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /students/{id}/groups:
+    get:
+      tags:
+        - student
+        - group
+      summary: Returns student's group
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '200':
+          $ref: '#/components/responses/GroupArr'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /teacher/{id}:
+    get:
+      tags:
+        - teacher
+      summary: Finds teacher by id
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '200':
+          $ref: '#/components/responses/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /teacher/{id}/subjects:
+    get:
+      tags:
+        - teacher
+        - subject
+      summary: Returns teacher's subjects
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+        - $ref: '#/components/parameters/is_active'
+      responses:
+        '200':
+          $ref: '#/components/responses/SubjectArr'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /teacher/{id}/groups:
+    get:
+      tags:
+        - teacher
+        - group
+      summary: Returns teacher's groups
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '200':
+          $ref: '#/components/responses/GroupArr'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
 components:
   schemas:
     User:
@@ -668,10 +759,6 @@ components:
           maxLength: 64
           minLength: 2
           example: Doe
-        hash:
-          type: string
-          nullable: false
-          maxLength: 128
         role:
           type: string
           description: Role of the user
@@ -685,50 +772,7 @@ components:
           nullable: false
           default: false
           example: true
-    User-NoHash:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          nullable: false
-          default: uuid_generate_v4()
-          example: 73fa5b43-a458-4c88-8c86-ace89d02fe51
-        email:
-          type: string
-          nullable: false
-          example: john@doe.com
-          maxLength: 255
-        phone:
-          type: string
-          format: phone
-          nullable: true
-          example: 995555123456
-        firstname:
-          type: string
-          nullable: false
-          maxLength: 64
-          minLength: 2
-          example: John
-        lastname:
-          type: string
-          nullable: false
-          maxLength: 64
-          minLength: 2
-          example: Doe
-        role:
-          type: string
-          description: Role of the user
-          enum: 
-            - ADMIN
-            - OWNER
-            - TEACHER
-            - STUDENT
-        userStatus:
-          type: boolean
-          nullable: false
-          default: false
-          example: true
+
     UserDTO:
       type: object
       properties:
@@ -771,21 +815,6 @@ components:
           nullable: false
           default: false
           example: true
-    Student:
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/User-NoHash'
-        groups:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Group'
-        subjects:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Subject'
     Owner:
       type: object
       properties:
@@ -872,7 +901,7 @@ components:
           enum:
             - USD
             - EUR
-            - GEL
+            - GEL    
     SubjectDTO:
       type: object
       properties:
@@ -1172,7 +1201,7 @@ components:
               - type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/User-NoHash'
+                    $ref: '#/components/schemas/User'
     UserArr:
       description: Successful User operation
       content:
@@ -1185,18 +1214,7 @@ components:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/User-NoHash'
-    Student:
-      description: Successful Student operation
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/ApiResponse'
-              - type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/Student'
+                      $ref: '#/components/schemas/User'
     Subject:
       description: Successful Subject operation
       content:
@@ -1251,14 +1269,7 @@ components:
                   data:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        group:
-                          $ref: '#/components/schemas/Group'
-                        subject:
-                          $ref: '#/components/schemas/Subject'
-                        teacher:
-                          $ref: '#/components/schemas/User'
+                      $ref: '#/components/schemas/Group'
     Lesson:
       description: Successful Lesson operation
       content:
@@ -1358,19 +1369,10 @@ components:
       required: true
       schema:
         type: string
-    include_student:
-      name: include
+    is_active:
+      name: is_active
       in: query
-      description: "Specify what to include, separate by comma"
-      example: groups,subjects
+      description: Specify wether the object should be active or not by passing true or false
       required: false
       schema:
-        type: string
-    include_group:
-      name: include
-      in: query
-      description: "Specify what to include, separate by comma"
-      example: subject,teacher
-      required: false
-      schema:
-        type: string
+        type: boolean

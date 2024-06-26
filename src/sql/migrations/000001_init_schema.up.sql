@@ -2,6 +2,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE SCHEMA IF NOT EXISTS client;
 CREATE SCHEMA IF NOT EXISTS class;
+CREATE SCHEMA IF NOT EXISTS student;
 
 CREATE TYPE ROLE AS ENUM ('ADMIN', 'OWNER', 'TEACHER', 'STUDENT');
 CREATE TYPE CURRENCY AS ENUM ('USD', 'EUR', 'GEL');
@@ -42,18 +43,6 @@ CREATE TABLE IF NOT EXISTS class.group(
     capacity INTEGER CHECK (capacity > 0 AND capacity < 100) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS class.group_student(
-    group_id UUID REFERENCES class.group(id) NOT NULL,
-    student_id UUID REFERENCES client.user(id) ON DELETE CASCADE NOT NULL,
-    PRIMARY KEY(group_id, student_id)
-)
-
-CREATE TABLE IF NOT EXISTS class.subject_student(
-    subject_id UUID REFERENCES class.subject(id) NOT NULL,
-    student_id UUID REFERENCES client.user(id) ON DELETE CASCADE NOT NULL,
-    PRIMARY KEY(subject_id, student_id)
-)
-
 CREATE TABLE IF NOT EXISTS class.lesson(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
     subject_id UUID REFERENCES class.subject(id) ON DELETE CASCADE NOT NULL,
@@ -72,13 +61,26 @@ CREATE TABLE IF NOT EXISTS class.quiz(
     deadline DATE CHECK (deadline > date)
 );
 
-CREATE TABLE IF NOT EXISTS class.attendance(
+CREATE TABLE IF NOT EXISTS student.attendance(
     lesson_id UUID REFERENCES class.lesson(id) ON DELETE CASCADE NOT NULL,
     student_id UUID REFERENCES client.user(id) ON DELETE CASCADE NOT NULL,
     PRIMARY KEY(lesson_id, student_id)
 );
 
-CREATE TABLE IF NOT EXISTS class.grade(
+CREATE TABLE IF NOT EXISTS student.group(
+    group_id UUID REFERENCES class.group(id) NOT NULL,
+    student_id UUID REFERENCES client.user(id) ON DELETE CASCADE NOT NULL,
+    PRIMARY KEY(group_id, student_id)
+)
+
+CREATE TABLE IF NOT EXISTS student.subject(
+    subject_id UUID REFERENCES class.subject(id) NOT NULL,
+    student_id UUID REFERENCES client.user(id) ON DELETE CASCADE NOT NULL,
+    is_active BOOLEAN NOT NULL,
+    PRIMARY KEY(subject_id, student_id)
+)
+
+CREATE TABLE IF NOT EXISTS student.grade(
     quiz_id UUID REFERENCES class.quiz(id) ON DELETE CASCADE NOT NULL,
     subject_id UUID REFERENCES class.subject(id) ON DELETE CASCADE NOT NULL,
     student_id UUID REFERENCES client.user(id) ON DELETE CASCADE NOT NULL,
