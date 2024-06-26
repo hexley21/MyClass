@@ -12,6 +12,7 @@ tags:
   - name: lesson
   - name: quiz
   - name: attendance
+  - name: grade
 paths:
   /users:
     get:
@@ -58,7 +59,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
-
     delete:
       tags:
         - user
@@ -691,16 +691,16 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
   
-  /students/{student_id}/groups/{group_id}/attendance:
+  /students/{student_id}/subjects/{subject_id}/attendance:
     get:
       tags:
         - student
         - attendance
-      summary: Returns student's attendance in a group
+      summary: Returns student's attendance in a subject
       parameters:
         - $ref: '#/components/parameters/AccessKey'
         - $ref: '#/components/parameters/student_id'
-        - $ref: '#/components/parameters/group_id'
+        - $ref: '#/components/parameters/subject_id'
       responses:
         '200':
           $ref: '#/components/responses/AttendanceArr'
@@ -768,7 +768,161 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+  /students/{id}/grades:
+    get:
+      tags:
+        - student
+        - grade
+      summary: Returns student's grades
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '200':
+          $ref: '#/components/responses/GradeArr'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /students/{student_id}/subjects/{subject_id}/grades:
+    get:
+      tags:
+        - student
+        - grade
+      summary: Returns student's grades in a subject
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/student_id'
+        - $ref: '#/components/parameters/subject_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/GradeArr'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
 
+  /students/{student_id}/quiz/{quiz_id}/grade:
+    get:
+      tags:
+        - student
+        - grade
+      summary: Returns student's group
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/student_id'
+        - $ref: '#/components/parameters/lesson_id'
+      responses:
+        '204':
+          description: Attendance was found
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags:
+        - student
+        - grade
+      summary: Update student's grade
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/student_id'
+        - $ref: '#/components/parameters/lesson_id'
+      requestBody:
+        description: Grade
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                grade:
+                  type: number
+                  nullable: false
+                  example: 5
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grade:
+                  type: number
+                  nullable: false
+                  example: 5
+      responses:
+        '200':
+          $ref: '#/components/responses/Grade'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+    post:
+      tags:
+        - student
+        - grade
+      summary: Adds student's grade
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/student_id'
+        - $ref: '#/components/parameters/lesson_id'
+      requestBody:
+        description: Grade
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                grade:
+                  type: number
+                  nullable: false
+                  example: 5
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grade:
+                  type: number
+                  nullable: false
+                  example: 5
+      responses:
+        '200':
+          $ref: '#/components/responses/Grade'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+    delete:
+      tags:
+        - student
+        - grade
+      summary: Deletes student's attendance
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/student_id'
+        - $ref: '#/components/parameters/lesson_id'
+      responses:
+        '204':
+          description: Grade was deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
   /teacher/{id}:
     get:
       tags:
@@ -1416,6 +1570,31 @@ components:
                     type: array
                     items:
                       $ref: '#/components/schemas/Attendance'
+    Grade:
+      description: Successful Lesson operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ApiResponse'
+              - type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Grade'
+    GradeArr:
+      description: Successful Lesson operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/PageResponse'
+              - type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Grade'
+
     Quiz:
       description: Successful Quiz operation
       content:
@@ -1502,6 +1681,13 @@ components:
       name: lesson_id
       in: path
       description: ID of a lesson
+      required: true
+      schema:
+        type: string
+    quiz_id:
+      name: quiz_id
+      in: path
+      description: ID of a quiz
       required: true
       schema:
         type: string
