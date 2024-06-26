@@ -45,10 +45,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User-Args'
+              $ref: '#/components/schemas/UserDTO'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User-Args'
+              $ref: '#/components/schemas/UserDTO'
       responses:
         '200':
           $ref: '#/components/responses/User'
@@ -119,10 +119,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User-Args'
+              $ref: '#/components/schemas/UserDTO'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User-Args'
+              $ref: '#/components/schemas/UserDTO'
       responses:
         '200':
           $ref: '#/components/responses/User'
@@ -160,10 +160,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Subject-Args'
+              $ref: '#/components/schemas/SubjectDTO'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Subject-Args'
+              $ref: '#/components/schemas/SubjectDTO'
       responses:
         '200':
           $ref: '#/components/responses/Subject'
@@ -217,10 +217,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Subject-Args'
+              $ref: '#/components/schemas/SubjectDTO'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Subject-Args'
+              $ref: '#/components/schemas/SubjectDTO'
       responses:
         '200':
           $ref: '#/components/responses/Subject'
@@ -262,10 +262,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Group-Args'
+              $ref: '#/components/schemas/GroupDTO'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Group-Args'
+              $ref: '#/components/schemas/GroupDTO'
       responses:
         '200':
           $ref: '#/components/responses/Group'
@@ -282,6 +282,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/AccessKey'
         - $ref: '#/components/parameters/UUID'
+        - $ref: '#/components/parameters/include_group'
       responses:
         '200':
           $ref: '#/components/responses/Group'
@@ -320,10 +321,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Group-Args'
+              $ref: '#/components/schemas/GroupDTO'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Group-Args'
+              $ref: '#/components/schemas/GroupDTO'
       responses:
         '200':
           $ref: '#/components/responses/Group'
@@ -432,10 +433,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Lesson-Args'
+              $ref: '#/components/schemas/LessonDTO'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Lesson-Args'
+              $ref: '#/components/schemas/LessonDTO'
       responses:
         '200':
           $ref: '#/components/responses/Lesson'
@@ -494,10 +495,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Lesson-Args'
+              $ref: '#/components/schemas/LessonDTO'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Lesson-Args'
+              $ref: '#/components/schemas/LessonDTO'
       responses:
         '200':
           $ref: '#/components/responses/Lesson'
@@ -541,10 +542,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Quiz-Args'
+              $ref: '#/components/schemas/QuizDTO'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Quiz-Args'
+              $ref: '#/components/schemas/QuizDTO'
       responses:
         '200':
           $ref: '#/components/responses/Quiz'
@@ -603,10 +604,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Quiz-Args'
+              $ref: '#/components/schemas/QuizDTO'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Quiz-Args'
+              $ref: '#/components/schemas/QuizDTO'
       responses:
         '200':
           $ref: '#/components/responses/Lesson'
@@ -624,7 +625,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/AccessKey'
         - $ref: '#/components/parameters/UUID'
-        - $ref: '#/components/parameters/include_gs'
+        - $ref: '#/components/parameters/include_student'
       responses:
         '200':
           $ref: '#/components/responses/Student'
@@ -728,7 +729,7 @@ components:
           nullable: false
           default: false
           example: true
-    User-Args:
+    UserDTO:
       type: object
       properties:
         email:
@@ -872,7 +873,7 @@ components:
             - USD
             - EUR
             - GEL
-    Subject-Args:
+    SubjectDTO:
       type: object
       properties:
         owner_id:
@@ -940,7 +941,7 @@ components:
           type: number
           nullable: false
           example: 25
-    Group-Args:
+    GroupDTO:
       type: object
       properties:
         teacher_id:
@@ -986,7 +987,7 @@ components:
           format: url
           nullable: true
           example: https://gtihub.com/hexley21
-    Lesson-Args:
+    LessonDTO:
       type: object
       properties:
         name:
@@ -1041,7 +1042,7 @@ components:
           format: date-time
           nullable: false
           example: 27/05/2024
-    Quiz-Args:
+    QuizDTO:
       type: object
       properties:
         max_grade:
@@ -1230,7 +1231,14 @@ components:
               - type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Group'
+                    type: object
+                    properties:
+                      group:
+                        $ref: '#/components/schemas/Group'
+                      subject:
+                        $ref: '#/components/schemas/Subject'
+                      teacher:
+                        $ref: '#/components/schemas/User'
     GroupArr:
       description: Successful Group operation
       content:
@@ -1243,7 +1251,14 @@ components:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Group'
+                      type: object
+                      properties:
+                        group:
+                          $ref: '#/components/schemas/Group'
+                        subject:
+                          $ref: '#/components/schemas/Subject'
+                        teacher:
+                          $ref: '#/components/schemas/User'
     Lesson:
       description: Successful Lesson operation
       content:
@@ -1343,10 +1358,19 @@ components:
       required: true
       schema:
         type: string
-    include_gs:
+    include_student:
       name: include
       in: query
-      description: Specify what to include and spearate each by comma
+      description: "Specify what to include, separate by comma"
+      example: groups,subjects
+      required: false
+      schema:
+        type: string
+    include_group:
+      name: include
+      in: query
+      description: "Specify what to include, separate by comma"
+      example: subject,teacher
       required: false
       schema:
         type: string
