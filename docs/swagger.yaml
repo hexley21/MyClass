@@ -11,6 +11,7 @@ tags:
   - name: teacher
   - name: lesson
   - name: quiz
+  - name: attendance
 paths:
   /users:
     get:
@@ -671,6 +672,103 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+  /students/{id}/attendance:
+    get:
+      tags:
+        - student
+        - attendance
+      summary: Returns student's group
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '200':
+          $ref: '#/components/responses/AttendanceArr'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  
+  /students/{student_id}/groups/{group_id}/attendance:
+    get:
+      tags:
+        - student
+        - attendance
+      summary: Returns student's attendance in a group
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/student_id'
+        - $ref: '#/components/parameters/group_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/AttendanceArr'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /students/{student_id}/lesson/{lesson_id}/attendance:
+    get:
+      tags:
+        - student
+        - attendance
+      summary: Returns student's group
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/student_id'
+        - $ref: '#/components/parameters/lesson_id'
+      responses:
+        '204':
+          description: Attendance was found
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      tags:
+        - student
+        - attendance
+      summary: Adds student's attendance
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/student_id'
+        - $ref: '#/components/parameters/lesson_id'
+      responses:
+        '204':
+          description: Attendance was Added
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+    delete:
+      tags:
+        - student
+        - attendance
+      summary: Deletes student's attendance
+      parameters:
+        - $ref: '#/components/parameters/AccessKey'
+        - $ref: '#/components/parameters/student_id'
+        - $ref: '#/components/parameters/lesson_id'
+      responses:
+        '204':
+          description: Attendance was deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
   /teacher/{id}:
     get:
       tags:
@@ -1294,6 +1392,30 @@ components:
                     type: array
                     items:
                       $ref: '#/components/schemas/Lesson'
+    Attendance:
+      description: Successful Lesson operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ApiResponse'
+              - type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Attendance'
+    AttendanceArr:
+      description: Successful Lesson operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/PageResponse'
+              - type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Attendance'
     Quiz:
       description: Successful Quiz operation
       content:
@@ -1366,6 +1488,20 @@ components:
       name: group_id
       in: path
       description: ID of a group
+      required: true
+      schema:
+        type: string
+    student_id:
+      name: student_id
+      in: path
+      description: ID of a student
+      required: true
+      schema:
+        type: string
+    lesson_id:
+      name: lesson_id
+      in: path
+      description: ID of a lesson
       required: true
       schema:
         type: string
